@@ -1,18 +1,20 @@
-name: Create discord.json from Secret
+name: Create JSON File from Secret
 
-on: [workflow_dispatch]  # Trigger manually
+on:
+  push:
 
 jobs:
-  create-file:
+  create-discord-json:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create discord.json from secret
-        run: |
-          echo "${{ secrets.test }}" > discord.json
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Upload discord.json as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: discord-config
-          path: discord.json
+      - name: Write JSON to file
+        run: |
+          echo "${{ secrets.DISCORD_JSON }}" > discord.json
+
+      - name: Print to verify
+        run: |
+          cat discord.json
