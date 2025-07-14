@@ -1,20 +1,19 @@
-name: Create JSON File from Secret
+name: Create and Upload JSON File
 
 on:
-  push:
+  workflow_dispatch:
 
 jobs:
-  create-discord-json:
+  create-upload-json:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Write JSON to file
+      - name: Create `discord.json` from secret
         run: |
           echo "${{ secrets.DISCORD_JSON }}" > discord.json
 
-      - name: Print to verify
-        run: |
-          cat discord.json
+      - name: Upload `discord.json` as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: discord-config
+          path: discord.json
